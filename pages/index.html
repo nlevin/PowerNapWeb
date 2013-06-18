@@ -1,4 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
-Welcome to Cactus!
+
+<div id="content">
+  <div id="timer">
+    <div id="circlewrapper">
+      <div id="circle">
+        <div id="minicircle"></div>
+      </div>
+    </div>
+    <div id="time">26</div>
+  </div>
+  <div id="promo">
+    <h1>Astronauts <a href="http://swampland.time.com/2011/04/26/memo-to-the-boss-naps-increase-performance/" target="_blank">love this shit</a></h1>
+    <h2>
+      <span class="icons">
+        <a href="#" class="ios">iOS</a> <a href="#" class="android">Android</a>
+      </span>
+    </h2>
+  </div>
+</div>
+
+<audio id="ding" preload="auto">
+  <source src="{{ STATIC_URL }}/sound/fin.m4a"></source>
+</audio>
+
 {% endblock %}

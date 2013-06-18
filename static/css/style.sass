@@ -1,0 +1,200 @@
+*
+  margin: 0
+  padding: 0
+  border: none
+  -webkit-user-select: none
+
+$circlebase: 400px
+$timesize: $circlebase / 2
+$circlepadding: ($timesize - ($timesize / 10)) 0
+$circleborder: $circlebase / 100
+$minicirclebase: ($circlebase / 40) + 3
+$circlecolor: #FFF
+$napduration: 26
+$minispeed: 60s
+
+// Some weird bug happening with this mixin, so using fixed 'orbit'
+@mixin keyframe ($animation)
+  @-webkit-keyframes orbit
+    @content
+  @-moz-keyframes orbit
+    @content
+  @-o-keyframes orbit
+    @content
+  @keyframes orbit
+    @content
+
+@mixin animation ($delay, $duration, $animation, $iteration, $curve)
+  -webkit-animation-delay: $delay
+  -webkit-animation-duration: $duration
+  -webkit-animation-name: $animation
+  -webkit-animation-iteration-count: $iteration
+  -webkit-animation-timing-function: $curve
+  -moz-animation-delay: $delay
+  -moz-animation-duration: $duration
+  -moz-animation-name: $animation
+  -moz-animation-iteration-count: $iteration
+  -moz-animation-timing-function: $curve
+  -o-animation-delay: $delay
+  -o-animation-duration: $duration
+  -o-animation-name: $animation
+  -o-animation-iteration-count: $iteration
+  -o-animation-timing-function: $curve
+  animation-delay: $delay
+  animation-duration: $duration
+  animation-name: $animation
+  animation-iteration-count: $iteration
+  animation-timing-function: $curve
+
+@mixin transition ($property, $duration, $curve)
+  -webkit-transition: $property $duration $curve
+  -moz-transition: $property $duration $curve
+  -o-transition: $property $duration $curve
+  transition: $property $duration $curve
+
+@mixin rotate ($rotation)
+  -webkit-transform: rotate($rotation)
+  -moz-transform: rotate($rotation)
+  -o-transform: rotate($rotation)
+  transform: rotate($rotation)
+
+@mixin gradient ($posa, $posb, $colora, $colorb)
+  background-image: -webkit-linear-gradient($posa $posb, $colora, $colorb)
+  background-image: -moz-linear-gradient($posa $posb, $colora, $colorb)
+  background-image: -o-linear-gradient($posa $posb, $colora, $colorb)
+  background-image: linear-gradient($posa $posb, $colora, $colorb)
+
+@mixin scale ($scale)
+  -webkit-transform: scale($scale)
+  -moz-transform: scale($scale)
+  -o-transform: scale($scale)
+  transform: scale($scale)
+
+html, body
+  height: 100%
+
+body
+  margin: 0
+  font: 28px/1em "Roboto", "Helvetica"
+  color: #FFF
+  text-align: center
+  -webkit-tap-highlight-color: rgba(0,0,0,0)
+  @include gradient (left, top, rgb(41,41,41) 4%, rgb(0,0,0) 76%)
+  // If Timer is On:
+  &.done
+    @include gradient (left, top, rgb(55,88,255) -30%, rgb(37,59,194) 100%)
+    #minicircle
+      opacity: 0
+  &.on
+    #circle
+      @include animation (0, $minispeed, orbit, $napduration, linear)
+    #minicircle
+      opacity: 1
+
+#circle, #time
+  font:
+    size: $timesize
+    weight: 100
+  width: $circlebase
+  height: $circlebase
+  text-align: center
+  margin: 0 auto
+
+#circlewrapper
+  @include rotate(20deg)
+
+#circle
+  border-radius: $circlebase
+  border: $circleborder solid $circlecolor
+
+#content
+  padding-top: 40px
+
+#timer
+  @include transition (all, .2s, ease-in-out)
+  &.pressed
+    @include scale (0.8)
+
+#time
+  margin-top: -($circlebase/2) - 20
+
+#minicircle
+  position: absolute
+  width: $minicirclebase
+  height: $minicirclebase
+  border-radius: $minicirclebase
+  background: $circlecolor
+  margin-left: 135px
+  opacity: off
+  @include transition (all, .3s, ease-in-out)
+
+@include keyframe (orbit)
+  from
+    @include rotate(0deg)
+  to
+    @include rotate(360deg)
+
+#promo
+  margin-top: -($circlebase/4)
+  h1
+    font:
+      size: 34px
+      weight: 100
+    margin-bottom: 80px
+    a
+      color: #FFF
+      text-decoration: none
+      border-bottom: 2px solid rgba(255,255,255,.4)
+  h2
+    font:
+      size: 24px
+      weight: 100
+    span.icons
+      display: block
+      margin-top: 40px
+      a.ios, a.android
+        text-indent: -9999px
+        display: inline-block
+        width: 50px
+        height: 60px
+        background-size: 50px 60px
+        background-repeat: no-repeat
+        opacity: 0.2
+        @include transition (all, .5s, ease-in-out)
+        &:hover
+          opacity: 1
+      a.ios
+        background-image: url("../img/apple2x.png")
+      a.android
+        background-image: url("../img/android2x.png")
+        margin-left: 20px
+
+
+//  Tablet layout
+@media only screen and (min-width: 768px) and (max-width: 991px)
+
+// Mobile layout
+@media only screen and (max-width: 767px)
+  #circlewrapper
+    @include rotate(-20deg)
+  #circle, #time
+    font-size: $timesize / 2
+    width: $circlebase / 2
+    height: $circlebase / 2
+  #circle
+    border-radius: $circlebase / 2
+    border: $circleborder solid $circlecolor
+  #time
+    margin-top: -($circlebase/4) - 20
+  #promo
+    margin-top: -($circlebase/10)
+    h1
+      font-size: 20px
+      margin-bottom: 20px
+    h2
+      font-size: 18px
+
+// Landscape Mobile Layout
+@media only screen and (min-width: 480px) and (max-width: 767px)
+  body
+    //width: 430px
